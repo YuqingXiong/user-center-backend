@@ -57,6 +57,14 @@ public class UserController {
         return userService.userLogin(userAccount, userPassword, request);
     }
 
+    @GetMapping("/current")
+    public User getCurrentUser(HttpServletRequest request){
+        // todo:校验用户是否合法
+        User userObject = (User)request.getSession().getAttribute(USER_LOGIN_STATE);
+        User currentUser = userService.getById(userObject.getId());
+        return userService.getSaftetyUser(currentUser);
+    }
+
     @GetMapping("/search")
     public List<User> searchUsers(String username, HttpServletRequest request){
         // 鉴权：仅管理员可查询
@@ -65,7 +73,7 @@ public class UserController {
         }
 
         QueryWrapper<User> wrapper = new QueryWrapper<>();
-        if(StringUtils.isBlank(username)){
+        if(StringUtils.isNotBlank(username)){
             wrapper.like("username", username);
         }
         List<User> userList = userService.list(wrapper);
