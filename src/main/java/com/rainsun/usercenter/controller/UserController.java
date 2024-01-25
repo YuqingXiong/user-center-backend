@@ -57,10 +57,21 @@ public class UserController {
         return userService.userLogin(userAccount, userPassword, request);
     }
 
+    @PostMapping("/logout")
+    public Integer userLogout(HttpServletRequest request){
+        if(request == null){
+            return null;
+        }
+        return userService.userLogout(request);
+    }
+
     @GetMapping("/current")
     public User getCurrentUser(HttpServletRequest request){
         // todo:校验用户是否合法
         User userObject = (User)request.getSession().getAttribute(USER_LOGIN_STATE);
+        if(userObject == null){
+            return null;
+        }
         User currentUser = userService.getById(userObject.getId());
         return userService.getSaftetyUser(currentUser);
     }
