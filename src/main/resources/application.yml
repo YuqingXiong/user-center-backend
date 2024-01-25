@@ -10,6 +10,8 @@ spring:
     timeout: 86400 # session 失效时间
 server:
   port: 8080
+  servlet:
+    context-path: /api
 
 mybatis-plus:
   configuration:
